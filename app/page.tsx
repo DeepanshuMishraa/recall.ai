@@ -1,5 +1,6 @@
 "use client";
 
+import { DocumentCard } from "@/components/document-card";
 import { ModeToggle } from "@/components/toggle";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
@@ -21,7 +22,7 @@ export default function Home() {
           Click Me
         </Button>
 
-        {documents?.map((doc) => <div key={doc._id}>{doc.title}</div>)}
+        {documents?.map((doc) => <DocumentCard key={doc._id} document={doc} />)}
       </Authenticated>
     </main>
   );
