@@ -13,7 +13,7 @@ import { Button } from "./ui/button";
 
 export const DocumentCard = ({document}:{document:Doc<"documents">}) => {
   return (
-    <Card className="w-[350px]">
+    <Card>
       <CardHeader>
         <CardTitle>{document.title}</CardTitle>
         <CardDescription></CardDescription>
@@ -23,7 +23,7 @@ export const DocumentCard = ({document}:{document:Doc<"documents">}) => {
         <p>Card content</p>
       </CardContent>
       <CardFooter>
-        <Button>View</Button>
+        <Button variant={"secondary"}>View</Button>
       </CardFooter>
     </Card>
   );
