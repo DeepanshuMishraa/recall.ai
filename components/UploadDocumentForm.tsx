@@ -16,8 +16,8 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Loader, Loader2 } from "lucide-react";
-import { useState } from "react";
+import {  Loader2 } from "lucide-react";
+import { Id } from "@/convex/_generated/dataModel";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -46,7 +46,7 @@ export const UploadDocumentForm = ({ onUpload }: { onUpload: () => void }) => {
     const { storageId } = await result.json();
     await createDocument({
       title: values.title,
-      fileId: storageId as string,
+      fileId: storageId as Id<"_storage">,
     });
     onUpload();
   }

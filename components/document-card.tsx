@@ -8,6 +8,8 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
+import { Eye } from "lucide-react";
+import Link from "next/link";
 
 export const DocumentCard = ({ document }: { document: Doc<"documents"> }) => {
   if (!document) {
@@ -28,7 +30,12 @@ export const DocumentCard = ({ document }: { document: Doc<"documents"> }) => {
           <p>Card content</p>
         </CardContent>
         <CardFooter>
-          <Button variant={"secondary"}>View</Button>
+          <Link href={`/documents/${document._id}`}>
+            <Button variant={"secondary"}>
+              <Eye size={16} className="mr-2" />
+              View
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     );
