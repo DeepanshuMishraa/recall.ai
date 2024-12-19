@@ -13,12 +13,11 @@ import { Button } from "./ui/button";
 import { UploadDocumentForm } from "./UploadDocumentForm";
 
 export const CreateDocumentButton = () => {
-  const createDocument = useMutation(api.documents.createDocument);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button onClick={() => createDocument({ title: "New Document" })}>
+        <Button>
           Create Document
         </Button>
       </DialogTrigger>
