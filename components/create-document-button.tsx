@@ -11,11 +11,12 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { UploadDocumentForm } from "./UploadDocumentForm";
+import { useState } from "react";
 
 export const CreateDocumentButton = () => {
-
+    const [open,setIsOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog onOpenChange={setIsOpen} open={open}>
       <DialogTrigger asChild>
         <Button>
           Create Document
@@ -29,7 +30,7 @@ export const CreateDocumentButton = () => {
                 Upload a team document for you to search and recall later.
             </DialogDescription>
         </DialogHeader>
-        <UploadDocumentForm/>
+        <UploadDocumentForm onUpload={()=>setIsOpen(false)}/>
       </DialogContent>
     </Dialog>
   );
