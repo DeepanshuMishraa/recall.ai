@@ -16,7 +16,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import {  Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
 
 const formSchema = z.object({
@@ -83,6 +83,7 @@ export const UploadDocumentForm = ({ onUpload }: { onUpload: () => void }) => {
                     onChange(file);
                   }}
                   type="file"
+                  accept=".txt,.xml,.doc"
                 />
               </FormControl>
               <FormDescription>
