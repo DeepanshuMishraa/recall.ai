@@ -1,10 +1,10 @@
 import Groq from "groq-sdk";
 
 const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY as string,
+  apiKey: "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",
 });
 
-export const getGroqChatCompletion = async (text) => {
+export const getGroqChatCompletion = async (text: any) => {
   return groq.chat.completions.create({
     messages: [
       {
