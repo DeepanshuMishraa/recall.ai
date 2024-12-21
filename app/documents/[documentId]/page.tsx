@@ -19,6 +19,8 @@ export default function DocumentPage({
     documentId: unwrappedParams.documentId,
   });
 
+
+
   if (!document) {
     return <div>You don't have access to view this document</div>;
   }

@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useAction } from "convex/react";
+import { cn } from "@/lib/utils";
+import { useAction, useQuery } from "convex/react";
 
 export default function ChatPanel({
   documentId,
@@ -12,6 +13,9 @@ export default function ChatPanel({
   documentId: Id<"documents">;
 }) {
   const askQuestion = useAction(api.documents.askQuestion);
+  const chats = useQuery(api.chat.getChatsForDocument, {
+    documentId,
+  });
 
   return (
     <div className="w-full h-[500px] bg-gray-900 flex flex-col rounded-lg overflow-hidden">
@@ -19,7 +23,20 @@ export default function ChatPanel({
         <div className="bg-slate-800 rounded-lg p-4 text-white">
           Ask anything about the document to the AI
         </div>
-        {/* Add more message components here as needed */}
+        {chats?.map((chat) => (
+          <div
+            key={chat._id}
+            className={cn(
+              {
+                "bg-slate-800": chat.isHuman,
+                "text-right": chat.isHuman,
+              },
+              "rounded-lg p-2"
+            )}
+          >
+            {chat.isHuman ? "YOU" : "AI"} {chat.text}
+          </div>
+        ))}
       </div>
       <form
         className="p-4 bg-gray-800"

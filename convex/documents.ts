@@ -1,6 +1,6 @@
 import { action, mutation, query } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
-import { api } from "./_generated/api";
+import { api, internal } from "./_generated/api";
 import { getGroqChatCompletion } from "./llm";
 
 export const generateUploadUrl = mutation(async (ctx) => {
@@ -100,6 +100,22 @@ export const askQuestion = action({
 
     const completion = await getGroqChatCompletion(text);
 
-    return completion?.choices[0].message.content;
+    //store user prompt as chat record a
+    await ctx.runMutation(internal.chat.createChatRecord, {
+      documentId: args.documentId,
+      text: args.question,
+      isHuman: true,
+      tokenIdentifier: userId,
+    });
+
+    const response =
+      completion?.choices[0].message.content ?? "could'nt generate a response";
+
+    await ctx.runMutation(internal.chat.createChatRecord, {
+      documentId: args.documentId,
+      text: response,
+      isHuman: false,
+      tokenIdentifier: userId,
+    });
   },
 });
