@@ -15,6 +15,3 @@ export const getGroqChatCompletion = async (text: string) => {
     model: "llama3-8b-8192",
   });
 };
-92",
-  });
-};
