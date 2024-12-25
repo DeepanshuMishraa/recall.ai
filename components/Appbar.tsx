@@ -1,22 +1,21 @@
 "use client";
 
-import { Rubik } from "next/font/google";
+import { Montserrat, Rubik } from "next/font/google";
 import Link from "next/link";
 import { ModeToggle } from "./toggle";
 import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
 import { SignInButton, UserButton } from "@clerk/nextjs";
 
-const rubik = Rubik({
+const mons = Montserrat({
   subsets: ["latin"],
 });
-
 export const AppBar = () => {
   return (
     <nav
-      className={`flex justify-between items-center p-4 border-b ${rubik.className}`}
+      className={`flex justify-between items-center p-4 border-b ${mons.className}`}
     >
       <div>
-        <Link href="/" className={`${rubik.className} md:text-xl text-pretty `}>
+        <Link href="/" className={`${mons.className} font-semibold md:text-xl text-pretty `}>
           Recall.ai
         </Link>
       </div>
