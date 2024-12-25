@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <main className="p-16">
       <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold">My Documents</h1>
+        <h1 className="text-4xl font:-bold">My Documents</h1>
         <CreateDocumentButton />
       </div>
       <div className="grid grid-cols-4 gap-4 mt-20">

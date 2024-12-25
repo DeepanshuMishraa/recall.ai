@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { internalMutation, mutation, query } from "./_generated/server";
+import { internalMutation, query } from "./_generated/server";
 
 export const getChatsForDocument = query({
   args: {
@@ -11,11 +11,13 @@ export const getChatsForDocument = query({
     if (!userId) {
       return [];
     }
+
     return await ctx.db
       .query("chats")
       .withIndex("by_documentId_bytokenIdentifier", (q) =>
-        q.eq("documentId", args.documentId).eq("tokenIdentifier", userId)
-      ).collect();
+        q.eq("documentId", args.documentId).eq("tokenIdentifier", userId),
+      )
+      .collect();
   },
 });
 
@@ -23,16 +25,15 @@ export const createChatRecord = internalMutation({
   args: {
     documentId: v.id("documents"),
     text: v.string(),
-    tokenIdentifier: v.string(),
     isHuman: v.boolean(),
+    tokenIdentifier: v.string(),
   },
-
   async handler(ctx, args) {
     await ctx.db.insert("chats", {
       documentId: args.documentId,
-      tokenIdentifier: args.tokenIdentifier,
-      text: args.tokenIdentifier,
+      text: args.text,
       isHuman: args.isHuman,
+      tokenIdentifier: args.tokenIdentifier,
     });
   },
 });
