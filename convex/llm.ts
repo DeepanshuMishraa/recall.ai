@@ -8,8 +8,30 @@ export const getGroqChatCompletion = async (text: string) => {
   return groq.chat.completions.create({
     messages: [
       {
+        role: "system",
+        content: `Here is a text file ${text}`,
+      },
+      {
         role: "user",
-        content: `Here is a docuemnt I would like to share with you: ${text}.Stay upto the point and do not waste time. `,
+        content:
+          "I would like you to go through this text file and answer the queries asked based on the content",
+      },
+    ],
+    model: "llama3-8b-8192",
+  });
+};
+
+export const generateDescription = async (text: string) => {
+  return groq.chat.completions.create({
+    messages: [
+      {
+        role: "system",
+        content: `Here is a text file ${text}   `,
+      },
+
+      {
+        role: "user",
+        content: "Please generate 1 sentance description for this text file",
       },
     ],
     model: "llama3-8b-8192",

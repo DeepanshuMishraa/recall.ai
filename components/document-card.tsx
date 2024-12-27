@@ -23,12 +23,8 @@ export const DocumentCard = ({ document }: { document: Doc<"documents"> }) => {
       <Card>
         <CardHeader>
           <CardTitle>{document.title}</CardTitle>
-          <CardDescription></CardDescription>
+          <CardDescription>{document.description}</CardDescription>
         </CardHeader>
-
-        <CardContent>
-          <p>Card content</p>
-        </CardContent>
         <CardFooter>
           <Link href={`/documents/${document._id}`}>
             <Button variant={"secondary"}>

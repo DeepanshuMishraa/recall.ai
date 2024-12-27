@@ -2,6 +2,8 @@ import {
   MutationCtx,
   QueryCtx,
   action,
+  internalAction,
+  internalMutation,
   internalQuery,
   mutation,
   query,
@@ -9,11 +11,11 @@ import {
 import { ConvexError, v } from "convex/values";
 import { internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
-import { getGroqChatCompletion } from "./llm";
+import { generateDescription, getGroqChatCompletion } from "./llm";
 
 export async function hasAccessToDocument(
   ctx: MutationCtx | QueryCtx,
-  documentId: Id<"documents">,
+  documentId: Id<"documents">
 ) {
   const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
 
@@ -92,10 +94,16 @@ export const createDocument = mutation({
       throw new ConvexError("Not authenticated");
     }
 
-    await ctx.db.insert("documents", {
+    const documentId = await ctx.db.insert("documents", {
       title: args.title,
       tokenIdentifier: userId,
+      description: "",
       fileId: args.fileId,
+    });
+
+    await ctx.scheduler.runAfter(0, internal.documents.fillDescription, {
+      fileId: args.fileId,
+      documentId,
     });
   },
 });
@@ -110,7 +118,7 @@ export const askQuestion = action({
       internal.documents.hasAccessToDocumentQuery,
       {
         documentId: args.documentId,
-      },
+      }
     );
 
     if (!accessObj) {
@@ -145,5 +153,44 @@ export const askQuestion = action({
     });
 
     return response;
+  },
+});
+
+export const fillDescription = internalAction({
+  args: {
+    documentId: v.id("documents"),
+    fileId: v.id("_storage"),
+  },
+
+  async handler(ctx, args) {
+    const file = await ctx.storage.get(args.fileId);
+
+    if (!file) {
+      throw new ConvexError("File not found");
+    }
+
+    const text = await file.text();
+
+    const completion = await generateDescription(text);
+
+    const response =
+      completion?.choices[0].message.content ?? "No response generated";
+
+    await ctx.runMutation(internal.documents.updateDocumentDescription, {
+      documentId: args.documentId,
+      description: response,
+    });
+  },
+});
+
+export const updateDocumentDescription = internalMutation({
+  args: {
+    documentId: v.id("documents"),
+    description: v.string(),
+  },
+  async handler(ctx, args_0) {
+    await ctx.db.patch(args_0.documentId, {
+      description: args_0.description,
+    });
   },
 });
