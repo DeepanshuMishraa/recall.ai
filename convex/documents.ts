@@ -194,3 +194,21 @@ export const updateDocumentDescription = internalMutation({
     });
   },
 });
+
+
+export const deleteDocument = mutation({
+    args:{
+        documentId:v.id("documents")
+    },
+    async handler(ctx, args) {
+
+        const accessobj = await hasAccessToDocument(ctx,args.documentId);
+
+        if(!accessobj){
+            throw new ConvexError("You do not have access to this document");
+        }
+
+        await ctx.storage.delete(accessobj.document.fileId);
+        await ctx.db.delete(args.documentId);
+    },
+})

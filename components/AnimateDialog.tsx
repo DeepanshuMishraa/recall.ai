@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogDescription,
@@ -8,11 +10,20 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
-import { TrashIcon } from "lucide-react";
+import { Loader2, Router, TrashIcon } from "lucide-react";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export function DeleteButton() {
+export function DeleteButton({ documentId }: { documentId: Id<"documents"> }) {
+  const deleteDocument = useMutation(api.documents.deleteDocument);
+  const [isLoading, setisLoading] = useState(false);
+  const [isOpen, setisOpen] = useState(false);
+  const router = useRouter();
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={(open) => setisOpen(open)}>
       <DialogTrigger
         asChild
         className="bg-zinc-950 px-4 py-2 text-sm text-white hover:bg-zinc-900 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
@@ -33,11 +44,32 @@ export function DeleteButton() {
           </DialogDescription>
 
           <div className="flex items-center gap-2">
-            <Button variant="destructive">Continue</Button>
+            <Button
+              onClick={() => {
+                setisLoading(true);
+                deleteDocument({
+                  documentId,
+                })
+                  .then(() => {
+                    setisOpen(false);
+                    router.push("/");
+                  })
+                  .finally(() => setisLoading(false));
+              }}
+              variant="destructive"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                </>
+              ) : (
+                "Continue"
+              )}
+            </Button>
             <Button variant="secondary">Cancel</Button>
           </div>
         </DialogHeader>
-        <DialogClose />
+        {/* <DialogClose /> */}
       </DialogContent>
     </Dialog>
   );

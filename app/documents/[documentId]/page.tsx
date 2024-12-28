@@ -32,7 +32,7 @@ export default function DocumentPage({
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">{document.title}</h1>
 
-        <DeleteButton />
+        <DeleteButton documentId={document._id} />
       </div>
 
       <Tabs defaultValue="document" className="w-full">
