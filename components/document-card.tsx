@@ -26,7 +26,7 @@ export const DocumentCard = ({ document }: { document: Doc<"documents"> }) => {
           <CardDescription>{document.description}</CardDescription>
         </CardHeader>
         <CardFooter>
-          <Link href={`/documents/${document._id}`}>
+          <Link href={`/dashboard/documents/${document._id}`}>
             <Button variant={"secondary"}>
               <Eye size={16} className="mr-2" />
               View
