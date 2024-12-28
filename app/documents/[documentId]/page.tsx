@@ -6,6 +6,9 @@ import { useQuery } from "convex/react";
 import ChatPanel from "./chat-panel";
 import { use } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DeleteIcon, TrashIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { DeleteButton } from "@/components/AnimateDialog";
 
 export default function DocumentPage({
   params,
@@ -19,16 +22,17 @@ export default function DocumentPage({
     documentId: unwrappedParams.documentId,
   });
 
-
-
   if (!document) {
     return <div>You don't have access to view this document</div>;
   }
 
   return (
     <main className="p-24 space-y-8">
+      {!document && <div>Loading...</div>}
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">{document.title}</h1>
+
+        <DeleteButton />
       </div>
 
       <Tabs defaultValue="document" className="w-full">

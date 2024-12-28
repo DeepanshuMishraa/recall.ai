@@ -17,7 +17,7 @@ export const getGroqChatCompletion = async (text: string) => {
           "I would like you to go through this text file and answer the queries asked based on the content",
       },
     ],
-    model: "llama3-8b-8192",
+    model: "llama-3.3-70b-versatile",
   });
 };
 
@@ -26,7 +26,7 @@ export const generateDescription = async (text: string) => {
     messages: [
       {
         role: "system",
-        content: `Here is a text file ${text}   `,
+        content: `Here is a text file ${text}`,
       },
 
       {
