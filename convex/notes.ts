@@ -54,7 +54,32 @@ export const getNotes = query({
   },
 });
 
-async function embed(text: string) {
+export const getNote = query({
+  args: {
+    noteId: v.id("notes"),
+  },
+  async handler(ctx, args) {
+    const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
+
+    if (!userId) {
+      return null;
+    }
+
+    const note = await ctx.db.get(args.noteId);
+
+    if (!note) {
+      return null;
+    }
+
+    if (note.tokenIdentifier !== userId) {
+      return null;
+    }
+
+    return note;
+  },
+});
+
+export async function embed(text: string) {
   const embedding = await model.embedContent(text);
 
   return embedding.embedding.values;

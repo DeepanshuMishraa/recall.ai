@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "convex/react";
 import { useForm } from "react-hook-form";
@@ -15,24 +15,29 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
-  text: z.string().min(1).max(250),
+  search: z.string().min(1).max(250),
 });
 
-export function SearchForm() {
-  const askQuestion = useAction(api.documents.askQuestion);
+export function SearchForm({
+  setResults,
+}: {
+  setResults: (notes: typeof api.search.searchAction._returnType) => void;
+}) {
+  const searchAction = useAction(api.search.searchAction);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      text: "",
+      search: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    await searchAction({ search: values.search }).then(setResults);
     form.reset();
   }
 
@@ -44,12 +49,12 @@ export function SearchForm() {
       >
         <FormField
           control={form.control}
-          name="text"
+          name="search"
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormControl>
                 <Input
-                  placeholder="Search over all your notes using vector search"
+                  placeholder="Search over all your notes and documents using vector searching"
                   {...field}
                 />
               </FormControl>
@@ -57,6 +62,7 @@ export function SearchForm() {
             </FormItem>
           )}
         />
+
         <Button>
           {form.formState.isSubmitting ? (
             <Loader2 className="animate-spin" />
