@@ -1,5 +1,22 @@
 import { ConvexError, v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
+
+export const getNotes = query({
+  async handler(ctx) {
+    const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
+
+    if (!userId) {
+      return null;
+    }
+
+    const notes = await ctx.db
+      .query("notes")
+      .withIndex("by_token_identifier", (q) => q.eq("tokenIdentifier", userId))
+      .collect();
+
+    return notes;
+  },
+});
 
 export const createNote = mutation({
   args: {

@@ -27,7 +27,7 @@ export const CreateNoteButton = () => {
             Create a Note for you to search and recall later.
           </DialogDescription>
         </DialogHeader>
-        <CreateNoteForm onUpload={() => setIsOpen(false)} />
+        <CreateNoteForm onNoteCreated={() => setIsOpen(false)} />
       </DialogContent>
     </Dialog>
   );

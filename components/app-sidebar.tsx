@@ -12,16 +12,16 @@ export function AppSidebar() {
 
   return (
     <div className="flex h-screen">
-      <aside className={`h-screen bg-black transition-all duration-300 ${
+      <aside className={`h-screen transition-all duration-300 ${
         isCollapsed ? "w-16" : "w-64"
       }`}>
         {/* Header */}
         <div className="flex items-center p-4">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-            <FileText className="h-5 w-5 text-white" />
+            <FileText className="h-5 w-5" />
           </div>
           {!isCollapsed && (
-            <span className="ml-3 text-lg font-semibold text-white">Recall.ai</span>
+            <span className="ml-3 text-lg font-semibold ">Recall.ai</span>
           )}
         </div>
 
@@ -30,21 +30,21 @@ export function AppSidebar() {
           <div className="space-y-4">
             <Link
               href="/dashboard/documents"
-              className="flex items-center gap-3 text-white/60 hover:text-white transition-colors"
+              className="flex items-center gap-3  transition-colors"
             >
               <FileText className="h-5 w-5" />
               {!isCollapsed && <span>Documents</span>}
             </Link>
             <Link
               href="/dashboard/notes"
-              className="flex items-center gap-3 text-white/60 hover:text-white transition-colors"
+              className="flex items-center gap-3  transition-colors"
             >
               <Notebook className="h-5 w-5" />
               {!isCollapsed && <span>Notes</span>}
             </Link>
             <Link
               href="/dashboard/settings"
-              className="flex items-center gap-3 text-white/60 hover:text-white transition-colors"
+              className="flex items-center gap-3  transition-colors"
             >
               <Settings className="h-5 w-5" />
               {!isCollapsed && <span>Settings</span>}
@@ -53,7 +53,7 @@ export function AppSidebar() {
         </nav>
 
         {/* Footer */}
-        <div className="mt-auto px-4 py-4 border-t border-white/10">
+        <div className="mt-auto px-4 py-4 border-t ">
           <div className={`flex items-center ${isCollapsed ? "justify-center" : "justify-between"}`}>
             <div className="flex items-center gap-2">
               <Unauthenticated>
@@ -63,7 +63,7 @@ export function AppSidebar() {
                 <UserButton />
               </Authenticated>
               <AuthLoading>
-                <div className="w-8 h-8 rounded-full bg-white/10 animate-pulse" />
+                <div className="w-8 h-8 rounded-full  animate-pulse" />
               </AuthLoading>
             </div>
             {!isCollapsed && <ModeToggle />}
@@ -74,7 +74,7 @@ export function AppSidebar() {
       {/* Collapse/Expand Button */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="h-10 -ml-3 mt-4 flex items-center justify-center bg-black hover:bg-white/10 text-white rounded-r"
+        className="h-10 -ml-3 mt-4 flex items-center justify-center  rounded-r"
       >
         {isCollapsed ? (
           <ChevronRight className="h-5 w-5" />

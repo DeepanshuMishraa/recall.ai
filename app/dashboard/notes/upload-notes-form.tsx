@@ -18,12 +18,17 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
-  text: z.string().min(2).max(50),
+  text: z.string().min(2),
 });
 
-export const CreateNoteForm = ({ onUpload }: { onUpload: () => void }) => {
+export const CreateNoteForm = ({
+  onNoteCreated,
+}: {
+  onNoteCreated: () => void;
+}) => {
   const createNote = useMutation(api.notes.createNote);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,11 +37,26 @@ export const CreateNoteForm = ({ onUpload }: { onUpload: () => void }) => {
     },
   });
 
+  const { toast } = useToast();
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createNote({
-      text: values.text,
-    });
-    onUpload();
+    try {
+      await createNote({
+        text: values.text,
+      });
+      onNoteCreated();
+
+      toast({
+        title: "Note Created",
+        description: "Your note has been created",
+      });
+    } catch (err) {
+      toast({
+        title: "Something went wrong",
+        description: `${err}`,
+        variant : "destructive",
+      });
+    }
   }
   return (
     <Form {...form}>
