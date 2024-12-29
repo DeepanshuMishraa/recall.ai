@@ -17,36 +17,24 @@ import { Button } from "@/components/ui/button";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Loader2 } from "lucide-react";
-import { Id } from "@/convex/_generated/dataModel";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
-  title: z.string().min(2).max(50),
-  file: z.instanceof(File),
+  text: z.string().min(2).max(50),
 });
 
 export const CreateNoteForm = ({ onUpload }: { onUpload: () => void }) => {
-  const createDocument = useMutation(api.documents.createDocument);
-  const generateUploadUrl = useMutation(api.documents.generateUploadUrl);
+  const createNote = useMutation(api.notes.createNote);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      text: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const url = await generateUploadUrl();
-
-    const result = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": values.file.type },
-      body: values.file,
-    });
-
-    const { storageId } = await result.json();
-    await createDocument({
-      title: values.title,
-      fileId: storageId as Id<"_storage">,
+    await createNote({
+      text: values.text,
     });
     onUpload();
   }
@@ -55,40 +43,18 @@ export const CreateNoteForm = ({ onUpload }: { onUpload: () => void }) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="title"
+          name="text"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Title of your document" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="file"
-          render={({ field: { value, onChange, ...fieldProps } }) => (
-            <FormItem>
-              <FormLabel>File</FormLabel>
-              <FormControl>
-                <Input
-                  {...fieldProps}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    onChange(file);
-                  }}
-                  type="file"
-                  accept=".txt,.xml,.doc"
+                <Textarea
+                  rows={8}
+                  placeholder="Title of your Note"
+                  {...field}
                 />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription>This is your note content</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -97,7 +63,7 @@ export const CreateNoteForm = ({ onUpload }: { onUpload: () => void }) => {
           {form.formState.isSubmitting && (
             <Loader2 className="animate-spin mr-2" />
           )}
-          {form.formState.isSubmitting ? "Uploading" : "Upload"}
+          {form.formState.isSubmitting ? "Creating" : "Create"}
         </Button>
       </form>
     </Form>
