@@ -26,7 +26,7 @@ export function AppSidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-4">
+        <nav className="flex px-4 py-4">
           <div className="space-y-4">
             <Link
               href="/dashboard/documents"
@@ -82,22 +82,6 @@ export function AppSidebar() {
           <ChevronLeft className="h-5 w-5" />
         )}
       </button>
-    </div>
-  );
-}
-
-export function SidebarWrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex h-screen">
-      <AppSidebar />
-      <main className="flex-1 bg-background">
-        <header className="flex h-16 items-center border-b px-4 md:hidden">
-          <button className="p-2 hover:bg-accent rounded-lg">
-            <PanelLeft className="h-4 w-4" />
-          </button>
-        </header>
-        {children}
-      </main>
     </div>
   );
 }

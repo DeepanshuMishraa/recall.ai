@@ -14,7 +14,7 @@ export default function Home() {
     <main className="p-10">
       <div className="flex justify-between gap-8 items-center">
         <h1 className="text-4xl font:-bold">My Documents</h1>
-        <div className="flex-1">
+        <div className="flex">
           <CreateDocumentButton />
         </div>
       </div>

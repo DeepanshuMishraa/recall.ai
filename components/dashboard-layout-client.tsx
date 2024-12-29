@@ -11,10 +11,8 @@ export function DashboardLayoutClient({
 }: DashboardLayoutClientProps) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen">
-        <AppSidebar className="w-64 max-w-md border-r" />
-        <main className="flex overflow-auto">{children}</main>
-      </div>
+      <AppSidebar />
+      {children}
     </SidebarProvider>
   );
 }
