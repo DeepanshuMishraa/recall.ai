@@ -8,6 +8,8 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { TrashIcon } from "lucide-react";
+import { DeleteNoteButton } from "./Delete-note-button";
 
 const PREVIEW_LENGTH = 10;
 
@@ -17,7 +19,7 @@ export const NotesCard = ({ notes }: { notes: Doc<"notes"> }) => {
   if (!notes) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <h1>No documents found</h1>
+        <h1>No Notes found</h1>
       </div>
     );
   }
@@ -29,13 +31,14 @@ export const NotesCard = ({ notes }: { notes: Doc<"notes"> }) => {
 
   return (
     <Card className="group hover:shadow-lg transition-shadow duration-200">
-      <CardHeader>
-        <CardTitle className="text-xl font-semibold">Note</CardTitle>
+      <CardHeader className="flex justify-between flex-row items-center">
+        <CardTitle className="text-xl font-semibold">{notes.title}</CardTitle>
+       <DeleteNoteButton noteId={notes._id}/>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col justify-between">
           <div className="overflow-y-auto">
-            <p className="text-sm text-gray-600 whitespace-pre-wrap">
+            <p className="text-sm text-gray-300 whitespace-pre-wrap">
               {displayText}
             </p>
           </div>

@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   text: z.string().min(2),
+  title: z.string().min(2),
 });
 
 export const CreateNoteForm = ({
@@ -34,6 +35,7 @@ export const CreateNoteForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       text: "",
+      title: "",
     },
   });
 
@@ -43,6 +45,7 @@ export const CreateNoteForm = ({
     try {
       await createNote({
         text: values.text,
+        title: values.title,
       });
       onNoteCreated();
 
@@ -54,7 +57,7 @@ export const CreateNoteForm = ({
       toast({
         title: "Something went wrong",
         description: `${err}`,
-        variant : "destructive",
+        variant: "destructive",
       });
     }
   }
@@ -63,10 +66,24 @@ export const CreateNoteForm = ({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="text"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Title of your Note" {...field} />
+              </FormControl>
+              <FormDescription>This is your note title</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="text"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Note</FormLabel>
               <FormControl>
                 <Textarea
                   rows={8}

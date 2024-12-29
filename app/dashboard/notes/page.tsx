@@ -4,6 +4,8 @@ import { NotesCard } from "@/components/notes-card";
 import { CreateNoteButton } from "./create-notes-button";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "@/components/ui/card";
 
 export default function Notes() {
   const notes = useQuery(api.notes.getNotes);
@@ -20,9 +22,19 @@ export default function Notes() {
           {notes?.map((note) => <NotesCard key={note._id} notes={note} />)}
         </div>
 
-        {(!notes || notes.length === 0) && (
-          <div className="text-center py-12">
-            <p>No notes yet. Create your first note!</p>
+        {( notes?.length === 0) && (
+          <div className="grid grid-cols-4 gap-8 mt-6">
+            {new Array(8).fill("").map((_, i) => (
+              <Card
+                key={i}
+                className="h-[200px] p-6 flex flex-col justify-between"
+              >
+                <Skeleton className="h-[20px] w-full rounded-lg" />
+                <Skeleton className="h-[20px] w-full rounded-lg" />
+                <Skeleton className="h-[20px] w-full rounded-lg" />
+                <Skeleton className="w-[80px] h-[40px] rounded-lg" />
+              </Card>
+            ))}
           </div>
         )}
       </div>
