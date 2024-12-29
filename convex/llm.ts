@@ -37,3 +37,4 @@ export const generateDescription = async (text: string) => {
     model: "llama3-8b-8192",
   });
 };
+
