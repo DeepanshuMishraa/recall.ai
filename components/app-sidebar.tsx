@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from "react";
-import { FileText, Notebook, Settings, PanelLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { FileText, Notebook, Settings, PanelLeft, ChevronLeft, ChevronRight, SearchIcon } from "lucide-react";
 import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 import { SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
@@ -12,9 +12,11 @@ export function AppSidebar() {
 
   return (
     <div className="flex h-screen">
-      <aside className={`h-screen transition-all duration-300 ${
-        isCollapsed ? "w-16" : "w-64"
-      }`}>
+      <aside
+        className={`h-screen transition-all duration-300 ${
+          isCollapsed ? "w-16" : "w-64"
+        }`}
+      >
         {/* Header */}
         <div className="flex items-center p-4">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
@@ -29,6 +31,15 @@ export function AppSidebar() {
         <nav className="flex px-4 py-4">
           <div className="space-y-4">
             <Link
+            prefetch
+              href="/dashboard/search"
+              className="flex items-center gap-3  transition-colors"
+            >
+              <SearchIcon className="h-5 w-5" />
+              {!isCollapsed && <span>Search</span>}
+            </Link>
+            <Link
+            prefetch
               href="/dashboard/documents"
               className="flex items-center gap-3  transition-colors"
             >
@@ -36,13 +47,16 @@ export function AppSidebar() {
               {!isCollapsed && <span>Documents</span>}
             </Link>
             <Link
+            prefetch
               href="/dashboard/notes"
               className="flex items-center gap-3  transition-colors"
             >
               <Notebook className="h-5 w-5" />
               {!isCollapsed && <span>Notes</span>}
             </Link>
+
             <Link
+            prefetch
               href="/dashboard/settings"
               className="flex items-center gap-3  transition-colors"
             >
@@ -54,7 +68,9 @@ export function AppSidebar() {
 
         {/* Footer */}
         <div className="mt-auto px-4 py-4 border-t ">
-          <div className={`flex items-center ${isCollapsed ? "justify-center" : "justify-between"}`}>
+          <div
+            className={`flex items-center ${isCollapsed ? "justify-center" : "justify-between"}`}
+          >
             <div className="flex items-center gap-2">
               <Unauthenticated>
                 <SignInButton />
